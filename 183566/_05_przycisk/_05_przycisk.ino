@@ -20,14 +20,23 @@ void loop() {
   } 
   
   if (minalMinimalnyOdstepCzasowy()) {
-    if (odczyt != obecny) {
-      obecny = !obecny;
-      if (obecny == HIGH) {
+    if (nastapilaZmiana(odczyt)) {
+      if (jestPrzycisniety()) {
         przelaczLampke(zapalona);
       }
     }
   }
   ostatni = odczyt;
+}
+
+boolean jestPrzycisniety() {
+  return obecny == HIGH;
+}
+
+boolean nastapilaZmiana(int odczyt) {
+  boolean b = odczyt != obecny;
+  if (b) { obecny = !obecny; }
+  return b;
 }
 
 boolean minalMinimalnyOdstepCzasowy() {
