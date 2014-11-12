@@ -20,10 +20,8 @@ void loop() {
   } 
   
   if (minalMinimalnyOdstepCzasowy()) {
-    if (nastapilaZmiana(odczyt)) {
-      if (jestPrzycisniety()) {
-        przelaczLampke(zapalona);
-      }
+    if (nastapilaZmiana(odczyt) && jestPrzycisniety()) {
+        przelaczLampke();
     }
   }
   ostatni = odczyt;
@@ -43,8 +41,8 @@ boolean minalMinimalnyOdstepCzasowy() {
   return (millis() - czasWcisniecia) > minimalnyCzasWcisniecia;
 }
 
-void przelaczLampke(int stan) {
-  zapalona = !stan;
+void przelaczLampke() {
+  zapalona = !zapalona;
   digitalWrite(ledPin, zapalona);
 }
 
