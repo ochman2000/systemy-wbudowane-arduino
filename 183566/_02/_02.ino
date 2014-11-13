@@ -1,5 +1,5 @@
 /*
- * Ten program odlicza 10 sekunk i wyświetla tylko te cyfry, które nie są zerem.
+ * Ten program odlicza 10 sekund i wyświetla tylko te cyfry, które nie są zerem.
  *
  * 2014-11-09, Warszawa, Polska
  * Systemy Wbudowane Politechnika Łódzka
@@ -21,7 +21,6 @@ void setup()
   Serial.begin(9600);
   Serial.println("Serial Display Test");
 
-  disp.setRotateMode();
   disp.clear();
   disp.setBrightness(255);
 }
