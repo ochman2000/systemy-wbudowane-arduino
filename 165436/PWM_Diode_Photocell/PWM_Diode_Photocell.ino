@@ -8,12 +8,14 @@
  // Pin assignments
  int LDR = 0;
  int LED = 9;
- 
+ int BTN = 2;
+  
  // Initialize the serial port
  // and declare inputs and outputs
  void setup() {
    pinMode(LDR, INPUT);
    pinMode(LED, OUTPUT);
+   pinMode(BTN, INPUT);
    Serial.begin(9600);
  }
  
@@ -60,6 +62,27 @@ int processPhotocellValue(int v) {
    return v;
 }
 
+// No button press means pin is connected to ground
+// and we read a LOW. When the button is closed, it
+// makes a connection between legs and we read a HIGH
+int readButtonState(int buttonPin) {
+  return digitalRead(buttonPin);
+}
+
+// Set LED accoring to the state (HIGH/LOW) of the input
+void turnOnDiode(int buttonState) {
+   // check if the pushbutton is pressed.
+  // if it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {     
+    // turn LED on:    
+    digitalWrite(LED, HIGH);  
+  } 
+  else {
+    // turn LED off:
+    digitalWrite(LED, LOW); 
+  }
+}
+
  // Read from the analog input connected to the LDR
  // then set the diode or motor PWM value
  // and print values to the serial port.
@@ -75,6 +98,13 @@ int processPhotocellValue(int v) {
    
    // Set the diode using PWM
    setPWMValue(LED, v);
+   
+   // Read button
+   int buttonState = readButtonState(BTN);
+   
+   // Set diode according to button state if pressed
+   if (buttonState)
+     turnOnDiode(buttonState);
    
    // Print to serial
    Serial.println(v);
