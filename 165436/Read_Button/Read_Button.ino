@@ -39,10 +39,14 @@ void setup() {
   pinMode(buttonPin, INPUT);     
 }
 
+// No button press means pin is connected to ground
+// and we read a LOW. When the button is closed, it
+// makes a connection between legs and we read a HIGH
 int readButtonState(int buttonPin) {
   return digitalRead(buttonPin);
 }
 
+// Set LED accoring to the state (HIGH/LOW) of the input
 void turnOnDiode(int buttonState) {
    // check if the pushbutton is pressed.
   // if it is, the buttonState is HIGH:
