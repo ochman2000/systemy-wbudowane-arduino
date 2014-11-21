@@ -15,14 +15,18 @@
    Serial.begin(9600);
  }
  
+ // Returns the analog value from input connected to the LDR
+ int readPhotocellValue(int LDR) {
+   return analogRead(LDR);
+ }
+ 
  // Read from the analog input connected to the LDR
  // and print the value to the serial port.
  // the delay is only to avoid sending so much data
  // as to make it unreadable.
  void loop() {
    
-   // Read the photocell value
-   int v = analogRead(LDR);
+   int v = readPhotocellValue(LDR);
    
    // Print to serial
    Serial.println(v);
