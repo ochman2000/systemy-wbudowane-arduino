@@ -13,9 +13,46 @@
  // and declare inputs and outputs
  void setup() {
    pinMode(LDR, INPUT);
+   pinMode(LED, OUTPUT);
    Serial.begin(9600);
  }
  
+// Input range: 0 - 255
+// Writes an analog value (PWM wave) to a pin
+// The pin will generate a steady square wave of the
+// specified duty cycle until next call to this function
+// Frequency is approx 490 Hz
+// On Ardu Uno Pin 5 and 6 are 980 Hz
+// analogWrite() works on pin 3, 5, 6, 9, 10, 11 normally with ATmega328
+// pinMode() needs to be called before use of this function.
+// The analogWrite function has nothing to do with the analog pins 
+// or the analogRead function.
+void setPWMValue(int led, int brightness) {
+   analogWrite(led, brightness);
+}
+
+ 
+// Returns the analog value from input connected to the LDR
+int readPhotocellValue(int LDR) {
+  return analogRead(LDR);
+}
+ 
+int processPhotocellValue(int v) {
+   // Interperet photocell value
+   // TODO
+   if (v<100) 
+     v=0;
+   if (v>100 && v<400) 
+     v=v-100;
+   if (v>400) 
+     v=255;
+   //Inverted function
+   //v=255-v;
+   if (v<0) 
+     v=0;
+   return v;
+}
+
  // Read from the analog input connected to the LDR
  // then set the diode or motor PWM value
  // and print values to the serial port.
@@ -24,20 +61,13 @@
  void loop() {
    
    // Read the photocell value
-   int v = analogRead(LDR);
+   int v = readPhotocellValue(LDR);
    
-   // Interperet photocell value
-   // TODO
-   if (v<100) v=0;
-   if (v>100 && v<400) 
-     v=v-100;
-   if (v>400) 
-     v=255;
-   //v=255-v;
-   if (v<0) v=0;
+   // Process data
+   v = processPhotocellValue(v);
    
    // Set the diode using PWM
-   analogWrite(LED, v);
+   setPWMValue(LED, v);
    
    // Print to serial
    Serial.println(v);

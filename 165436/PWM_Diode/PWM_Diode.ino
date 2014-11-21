@@ -17,10 +17,24 @@ void setup()  {
   pinMode(led, OUTPUT);
 } 
 
+// Input range: 0 - 255
+// Writes an analog value (PWM wave) to a pin
+// The pin will generate a steady square wave of the
+// specified duty cycle until next call to this function
+// Frequency is approx 490 Hz
+// On Ardu Uno Pin 5 and 6 are 980 Hz
+// analogWrite() works on pin 3, 5, 6, 9, 10, 11 normally with ATmega328
+// pinMode() needs to be called before use of this function.
+// The analogWrite function has nothing to do with the analog pins 
+// or the analogRead function.
+void setPWMAmount(int led, int brightness) {
+   analogWrite(led, brightness);
+}
+
 // the loop routine runs over and over again forever:
 void loop()  { 
   // set the brightness of pin 9:
-  analogWrite(led, brightness);    
+  setPWMAmount(led, brightness);    
 
   // change the brightness for next time through the loop:
   brightness = brightness + fadeAmount;
