@@ -62,7 +62,7 @@ void loop()
         delay(10);
     } else {
 
-        disp.writeStr("SIUP");
+        disp.writeStr("HAHA");
 
         for (int j = 1000; j>0; j--) {
             int a = j%50;
