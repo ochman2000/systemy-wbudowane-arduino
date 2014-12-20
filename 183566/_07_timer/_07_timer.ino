@@ -22,16 +22,20 @@ int obecny;
 int ostatni = LOW;
 long czasWcisniecia = 0;
 long minimalnyCzasWcisniecia = 50;
+volatile int i;
 
 void setup() {
   pinMode(buttonPin, INPUT);
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, enabled);
-
+  
+  Timer1.initialize(100000); // set a timer of length 100000 microseconds (or 0.1 sec - or 10Hz => the led will blink 5 times, 5 cycles of on-and-off, per second)
+  Timer1.attachInterrupt( timerIsr ); // attach the service routine here
+  
   Wire.begin();
   Serial.begin(9600);
   Serial.println("Serial Display Test");
-
+  
   disp.clear();
   disp.setBrightness(255);
 }
@@ -39,7 +43,8 @@ void setup() {
 void loop()
 {  
   disp.setBrightness(255);
-  for (int i = 1000; i>0;) {
+  if (i == -100) { i=999; }
+  if (i>0) {
     int odczyt = digitalRead(buttonPin);
   if (odczyt != ostatni) {
     czasWcisniecia = millis();
@@ -51,22 +56,33 @@ void loop()
     }
   }
   ostatni = odczyt; 
-    if (enabled) i--;
+//    if (enabled) i--;
     writeCyfra(i);
     disp.setDots(0,1,0,0);
     delay(10);
-  }
+  } else {
   
   disp.writeStr("SIUP");
 
-  for (int i = 1000; i>0; i--) {
-    int a = i%50;
+  for (int j = 1000; j>0; j--) {
+    int a = j%50;
     if (a>0 && a<25)
       disp.setBrightness(255);
     else
       disp.setBrightness(0);
     delay(2);
   }    
+  }
+}
+
+/// --------------------------
+/// Custom ISR Timer Routine
+/// --------------------------
+void timerIsr()
+{
+    // Toggle LED
+//    digitalWrite( 13, digitalRead( 13 ) ^ 1 );
+    if (enabled) i--;
 }
 
 void writeCyfra(int val)
